@@ -1,0 +1,209 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, sans-serif;
+}
+
+body {
+    background-color: #f1efe7;
+    color: #333;
+    padding: 1rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    font-size: 2rem;
+    color: #1612d3;
+}
+
+/* Main container - always centered */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* FEN Input - always centered above board */
+#FenInDiv {
+    text-align: center;
+    width: 100%;
+    max-width: 480px;
+}
+
+#FenInDiv label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.fen-input-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+#fenIn {
+    flex: 1;
+    padding: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 0; /* Allow input to shrink */
+}
+
+#SetFen {
+    padding: 0.3rem 1rem;
+    background-color: rgb(0, 145, 255);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#SetFen:hover {
+    background-color:rgb(0, 103, 181);
+}
+
+/* Wrapper for board and engine output */
+#wrapper {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#robot {
+    margin-left: -150px;
+}
+
+/* Board - always centered */
+#Board {
+    width: 480px;
+    height: 480px;
+    position: relative;
+    /* border: 2px solid black; */
+    flex-shrink: 0;
+    box-sizing: unset;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.Square {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.Piece {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.rank1 { top: 420px; }
+.rank2 { top: 360px; }
+.rank3 { top: 300px; }
+.rank4 { top: 240px; }
+.rank5 { top: 180px; }
+.rank6 { top: 120px; }
+.rank7 { top: 60px; }
+.rank8 { top: 0px; }
+
+.file1 { left: 0px; }
+.file2 { left: 60px; }
+.file3 { left: 120px; }
+.file4 { left: 180px; }
+.file5 { left: 240px; }
+.file6 { left: 300px; }
+.file7 { left: 360px; }
+.file8 { left: 420px; }
+
+.Dark {
+    background-color: #51b4ff98;
+}
+
+.Light {
+    background-color: #e6f3f6;
+}
+
+.SqSelected {
+    background-color: rgb(0, 103, 181) !important;
+}
+
+/* Engine Output */
+#EngineOutput {
+    min-width: 250px;
+    max-width: 300px;
+    max-height: 435px;
+    background: #ffffff;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+#EngineOutput button {
+    display: block;
+    width: 100%;
+    margin: 0.3rem 0;
+    padding: 0.5rem;
+    background-color: rgb(0, 145, 255);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#EngineOutput button:hover {
+    background-color: rgb(0, 103, 181);
+}
+
+#ThinkTimeChoice {
+    width: 100%;
+    padding: 0.4rem;
+    margin-top: 5%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#GameStatus {
+    background-color: #1512a2;
+    margin: 15px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+    #robot {
+        display: none;
+    }
+    #wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #EngineOutput {
+        width: 100%;
+        max-width: 480px;
+    }
+    
+    body {
+        padding: 0.5rem;
+    }
+}
+
+ @media (max-width: 520px) {
+    #robot {
+        display: none;
+    }
+}

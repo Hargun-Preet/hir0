@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hir0</title>
+    <link rel="stylesheet" href="styles.css" type="text/css">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script type="text/javascript">if (!window.console) console = {log: function() {}};</script>
+</head>
+<body>
+    <header>
+        <img src="images/logo.png" alt="" height="45px">
+    </header>
+        
+
+        <main class="container">
+            <div id="FenInDiv">
+                
+                <div class="fen-input-row">
+                    <label for="fenIn">FEN:</label>
+                    <input type="text" id="fenIn" />
+                    <button id="SetFen">Set Position</button>
+                </div>
+            </div>
+        
+        <div id="wrapper">
+            <img id="robot" src="images/happy1.png" alt="Normal"  width="400"/>
+            <div id="Board" ></div>
+        
+
+        <section id="EngineOutput">
+            <b>Thinking Time:</b><br />
+            <select id="ThinkTimeChoice">
+                <option value="1">1s</option>
+                <option value="2">2s</option>
+                <option value="4">4s</option>
+                <option value="6">6s</option>
+                <option value="8">8s</option>
+                <option value="10">10s</option>
+            </select><br /><br />
+
+            <span id="BestOut">Best Move:</span><br/>
+            <span id="DepthOut">Depth:</span><br/>
+            <span id="ScoreOut">Score:</span><br/>
+            <span id="NodesOut">Nodes:</span><br/>
+            <span id="OrderingOut">Ordering:</span><br/>
+            <span id="TimeOut">Time:</span><br/><br/>
+
+            <button id="SearchButton">Move Now</button>
+            <button id="NewGameButton">New Game</button>
+            <button id="FlipButton">Flip Board</button>
+            <button id="TakeButton">Take Back</button><br/><br/>
+            <div id="GameStatus"></div>
+        </section>
+        </div>
+    </main>
+        <script src="js/jquery-3.7.1.min.js"></script>
+        <script src="js/defs.js"></script>
+        <script src="js/io.js"></script>
+        <script src="js/board.js"></script>
+        <script src="js/movegen.js"></script>
+        <script src="js/makemove.js"></script>
+        <script src="js/evaluate.js"></script>
+        <script src="js/pvtable.js"></script>
+        <script src="js/search.js"></script>
+        <script src="js/perft.js"></script>
+        <script src="js/gui.js"></script>
+        <script src="js/main.js"></script>   
+        <script>
+    const frames = [
+        "images/happy1.png", "images/happy2.png",
+        "images/happy3.png", "images/happy4.png",
+        "images/happy3.png", "images/happy2.png",
+        "images/happy1.png", "images/happy1.png",
+        "images/happy1.png", "images/happy1.png"
+    ];
+    let currentFrame = 0;
+    const robot = document.getElementById("robot");
+    let animationInterval;
+    let hasGameEnded = false;
+
+    function startBlinkingAnimation() {
+        if (animationInterval || hasGameEnded) return;
+        animationInterval = setInterval(() => {
+            if (!SearchController.thinking && !hasGameEnded) {
+                currentFrame = (currentFrame + 1) % frames.length;
+                robot.src = frames[currentFrame];
+            }
+        }, 300);
+    }
+
+    function stopBlinkingAndShowThinking() {
+        clearInterval(animationInterval);
+        animationInterval = null;
+        if (!hasGameEnded) {
+            robot.src = "images/think.png";
+        }
+    }
+
+    function showEndGameImage() {
+        // Check #GameStatus text
+        const status = document.getElementById("GameStatus").textContent;
+
+        // Determine who the winner is based on message
+        const blackWins = status.includes("Black Mates");
+        const whiteWins = status.includes("White Mates");
+
+        if (!blackWins && !whiteWins) return;
+
+        hasGameEnded = true;
+        clearInterval(animationInterval);
+
+        // Match winner against engine/player side
+        const engineSide = GameController.EngineSide || (GameController.PlayerSide ^ 1);
+        const winnerSide = blackWins ? COLOURS.BLACK : COLOURS.WHITE;
+
+        if (winnerSide === engineSide) {
+            robot.src = "images/win.png";
+        } else {
+            robot.src = "images/lose.png";
+        }
+    }
+
+    // Main logic loop
+    setInterval(() => {
+        // Reset if game is not over
+        if (!GameController.GameOver && hasGameEnded) {
+            hasGameEnded = false;
+            startBlinkingAnimation();
+            return;
+        }
+
+        if (!hasGameEnded) {
+            showEndGameImage();
+        }
+
+        if (SearchController.thinking && !hasGameEnded) {
+            stopBlinkingAndShowThinking();
+        } else if (!SearchController.thinking && !hasGameEnded) {
+            startBlinkingAnimation();
+        }
+    }, 100);
+</script>
+
+
+
+</body>
+</html>
